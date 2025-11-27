@@ -1,78 +1,61 @@
 import { useEffect, useState } from "react";
-import { getMatches, updateMatch, getTeams, createMatch } from "./api";
 
 function App() {
   const [matches, setMatches] = useState([]);
-  const [teams, setTeams] = useState([]);
-  const [selectedMatch, setSelectedMatch] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const fetchData = async () => {
-    const [matchesRes, teamsRes] = await Promise.all([
-      getMatches(),
-      getTeams(),
-    ]);
-    setMatches(matchesRes.data);
-    setTeams(teamsRes.data);
-  };
-
-  // Poll every 5s for "near real-time"
   useEffect(() => {
-    fetchData();
-    const id = setInterval(fetchData, 5000);
-    return () => clearInterval(id);
+    async function load() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/matches/");
+        if (!res.ok) {
+          throw new Error("Failed to fetch matches");
+        }
+        const data = await res.json();
+        setMatches(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
   }, []);
 
-  const handleScoreUpdate = async (match, field, delta) => {
-    const newValue = match[field] + delta;
-    await updateMatch(match.id, { [field]: newValue });
-    fetchData();
-  };
+  if (loading) return <div>Loading matches...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div style={{ padding: 20 }}>
       <h1>Cricket Scoreboard</h1>
 
-      <h2>Matches</h2>
-      <ul>
-        {matches.map((m) => (
-          <li
-            key={m.id}
-            onClick={() => setSelectedMatch(m)}
-            style={{
-              cursor: "pointer",
-              border: "1px solid #ccc",
-              padding: 10,
-              marginBottom: 10,
-            }}
-          >
-            <strong>
-              {m.team_a_name} vs {m.team_b_name}
-            </strong>{" "}
-            – {m.status}
-            <div>
-              {m.team_a_name}: {m.runs_team_a}/{m.wickets_team_a} in{" "}
-              {m.overs_team_a} overs
-            </div>
-            <div>
-              {m.team_b_name}: {m.runs_team_b}/{m.wickets_team_b} in{" "}
-              {m.overs_team_b} overs
-            </div>
-          </li>
-        ))}
-      </ul>
+      {matches.length === 0 && <p>No matches found.</p>}
 
-      {selectedMatch && (
-        <div style={{ marginTop: 20 }}>
-          <h2>Update Score: {selectedMatch.team_a_name}</h2>
-          <button onClick={() => handleScoreUpdate(selectedMatch, "runs_team_a", 1)}>
-            +1 Run (Team A)
-          </button>
-          <button onClick={() => handleScoreUpdate(selectedMatch, "wickets_team_a", 1)}>
-            +1 Wicket (Team A)
-          </button>
-          {/* Add similar controls for team_b and overs fields */}
+      {matches.map((m) => (
+        <div
+          key={m.id}
+          style={{
+            border: "1px solid #ccc",
+            padding: 10,
+            marginBottom: 10,
+          }}
+        >
+          <h2>
+            {m.team_a_name} vs {m.team_b_name}
+          </h2>
+          <p>Status: {m.status}</p>
+          <p>
+            {m.team_a_name}: {m.runs_team_a}/{m.wickets_team_a} in{" "}
+            {m.overs_team_a} overs
+          </p>
+          <p>
+            {m.team_b_name}: {m.runs_team_b}/{m.wickets_team_b} in{" "}
+            {m.overs_team_b} overs
+          </p>
         </div>
-      )}
+      ))}
     </div>
   );
 }
