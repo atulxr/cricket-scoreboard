@@ -1,4 +1,27 @@
 import { useEffect, useState } from "react";
+import {
+  MantineProvider,
+  Container,
+  Title,
+  Text,
+  Card,
+  Loader,
+  Stack,
+} from "@mantine/core";
+import { TEAMS } from "./data/teams";
+
+// helper: map full name from backend -> flag + shortName
+function getTeamInfo(name) {
+  const t = TEAMS.find((team) => team.name === name);
+  if (!t) {
+    return {
+      name,
+      shortName: name,
+      flag: "",
+    };
+  }
+  return t;
+}
 
 function App() {
   const [matches, setMatches] = useState([]);
@@ -24,39 +47,76 @@ function App() {
     load();
   }, []);
 
-  if (loading) return <div>Loading matches...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading)
+    return (
+      <MantineProvider>
+        <Container size="sm" py="xl">
+          <Loader size="lg" />
+          <Text mt="md">Loading matches...</Text>
+        </Container>
+      </MantineProvider>
+    );
+
+  if (error)
+    return (
+      <MantineProvider>
+        <Container size="sm" py="xl">
+          <Text color="red" size="lg">
+            Error: {error}
+          </Text>
+        </Container>
+      </MantineProvider>
+    );
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Cricket Scoreboard</h1>
+    <MantineProvider>
+      <Container size="sm" py="xl">
+        <Title order={1} mb="xl">
+          Cricket Scoreboard
+        </Title>
 
-      {matches.length === 0 && <p>No matches found.</p>}
+        {matches.length === 0 && <Text>No matches found.</Text>}
 
-      {matches.map((m) => (
-        <div
-          key={m.id}
-          style={{
-            border: "1px solid #ccc",
-            padding: 10,
-            marginBottom: 10,
-          }}
-        >
-          <h2>
-            {m.team_a_name} vs {m.team_b_name}
-          </h2>
-          <p>Status: {m.status}</p>
-          <p>
-            {m.team_a_name}: {m.runs_team_a}/{m.wickets_team_a} in{" "}
-            {m.overs_team_a} overs
-          </p>
-          <p>
-            {m.team_b_name}: {m.runs_team_b}/{m.wickets_team_b} in{" "}
-            {m.overs_team_b} overs
-          </p>
-        </div>
-      ))}
-    </div>
+        <Stack>
+          {matches.map((m) => {
+            const teamA = getTeamInfo(m.team_a_name);
+            const teamB = getTeamInfo(m.team_b_name);
+
+            return (
+              <Card
+                key={m.id}
+                shadow="md"
+                padding="lg"
+                radius="md"
+                withBorder
+              >
+                <Title order={3}>
+                  {/* Header: FLAG SHORT (Full name) vs FLAG SHORT (Full name) */}
+                  {teamA.flag} {teamA.shortName} ({teamA.name}) vs{" "}
+                  {teamB.flag} {teamB.shortName} ({teamB.name})
+                </Title>
+
+                <Text mt="sm" fw={500}>
+                  Status: {m.status}
+                </Text>
+
+                <Text mt="xs">
+                  {teamA.flag} {teamA.shortName}:{" "}
+                  <strong>{m.runs_team_a}</strong> / {m.wickets_team_a} in{" "}
+                  {m.overs_team_a} overs
+                </Text>
+
+                <Text mt="xs">
+                  {teamB.flag} {teamB.shortName}:{" "}
+                  <strong>{m.runs_team_b}</strong> / {m.wickets_team_b} in{" "}
+                  {m.overs_team_b} overs
+                </Text>
+              </Card>
+            );
+          })}
+        </Stack>
+      </Container>
+    </MantineProvider>
   );
 }
 
