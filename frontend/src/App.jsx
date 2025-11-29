@@ -9,6 +9,7 @@ import {
   Stack,
 } from "@mantine/core";
 import { TEAMS } from "./data/teams";
+import "flag-icons/css/flag-icons.min.css"; // <-- IMPORTANT
 
 // helper: map full name from backend -> flag + shortName
 function getTeamInfo(name) {
@@ -91,9 +92,11 @@ function App() {
                 withBorder
               >
                 <Title order={3}>
-                  {/* Header: FLAG SHORT (Full name) vs FLAG SHORT (Full name) */}
-                  {teamA.flag} {teamA.shortName} ({teamA.name}) vs{" "}
-                  {teamB.flag} {teamB.shortName} ({teamB.name})
+                  {/* Header with flag-icons */}
+                  <span className={`fi fi-${teamA.flag} flag-icon`} />{" "}
+                  {teamA.shortName} ({teamA.name}) vs{" "}
+                  <span className={`fi fi-${teamB.flag} flag-icon`} />{" "}
+                  {teamB.shortName} ({teamB.name})
                 </Title>
 
                 <Text mt="sm" fw={500}>
@@ -101,13 +104,15 @@ function App() {
                 </Text>
 
                 <Text mt="xs">
-                  {teamA.flag} {teamA.shortName}:{" "}
+                  <span className={`fi fi-${teamA.flag} flag-icon`} />{" "}
+                  {teamA.shortName}:{" "}
                   <strong>{m.runs_team_a}</strong> / {m.wickets_team_a} in{" "}
                   {m.overs_team_a} overs
                 </Text>
 
                 <Text mt="xs">
-                  {teamB.flag} {teamB.shortName}:{" "}
+                  <span className={`fi fi-${teamB.flag} flag-icon`} />{" "}
+                  {teamB.shortName}:{" "}
                   <strong>{m.runs_team_b}</strong> / {m.wickets_team_b} in{" "}
                   {m.overs_team_b} overs
                 </Text>

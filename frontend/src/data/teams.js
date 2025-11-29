@@ -5,90 +5,92 @@ export const TEAMS = [
     id: "IND",
     name: "India",
     shortName: "IND",
-    flag: "🇮🇳",
+    flag: "in",
   },
   {
     id: "AUS",
     name: "Australia",
     shortName: "AUS",
-    flag: "🇦🇺",
+    flag: "au",
   },
   {
     id: "ENG",
     name: "England",
     shortName: "ENG",
-    flag: "🇬🇧", // St George / adjust if you prefer 🇬🇧
+    flag: "gb", // or "eng" for St George cross (flag-icons supports both)
   },
   {
     id: "PAK",
     name: "Pakistan",
     shortName: "PAK",
-    flag: "🇵🇰",
+    flag: "pk",
   },
   {
     id: "NZ",
     name: "New Zealand",
     shortName: "NZ",
-    flag: "🇳🇿",
+    flag: "nz",
   },
   {
     id: "SA",
     name: "South Africa",
     shortName: "SA",
-    flag: "🇿🇦",
+    flag: "za",
   },
   {
     id: "SL",
     name: "Sri Lanka",
     shortName: "SL",
-    flag: "🇱🇰",
+    flag: "lk",
   },
   {
     id: "BAN",
     name: "Bangladesh",
     shortName: "BAN",
-    flag: "🇧🇩",
+    flag: "bd",
   },
   {
     id: "AFG",
     name: "Afghanistan",
     shortName: "AFG",
-    flag: "🇦🇫",
+    flag: "af",
   },
   {
     id: "WI",
     name: "West Indies",
     shortName: "WI",
-    flag: "🏴‍☠️", // West Indies has no official emoji, using placeholder
+    flag: "car", 
+    // OR pick one of the actual countries (jm, tt, bb, ag, etc.)
+    // No official West Indies flag exists.
   },
   {
     id: "IRE",
     name: "Ireland",
     shortName: "IRE",
-    flag: "🇮🇪",
+    flag: "ie",
   },
   {
     id: "ZIM",
     name: "Zimbabwe",
     shortName: "ZIM",
-    flag: "🇿🇼",
+    flag: "zw",
   },
   {
     id: "NED",
     name: "Netherlands",
     shortName: "NED",
-    flag: "🇳🇱",
+    flag: "nl",
   },
   {
     id: "NEP",
     name: "Nepal",
     shortName: "NEP",
-    flag: "🇳🇵",
+    flag: "np",
   },
   {
     id: "UAE",
     name: "United Arab Emirates",
     shortName: "UAE",
-    flag: "🇦🇪",
+    flag: "ae",
   },
 ];

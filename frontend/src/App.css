@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+
+.flag-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  display: inline-block;
+  border-radius: 2px;
+}
