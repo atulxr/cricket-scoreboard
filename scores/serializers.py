@@ -17,4 +17,12 @@ class MatchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Match
-        fields = '__all__'
+        fields = [
+            'id','team_a','team_b','team_a_name','team_b_name','overs_limit',
+            'runs_team_a','wickets_team_a','overs_team_a',
+            'runs_team_b','wickets_team_b','overs_team_b',
+            'striker_name','striker_runs','striker_balls',
+            'non_striker_name','non_striker_runs','non_striker_balls',
+            'bowler_name','bowler_balls','bowler_overs','bowler_runs','bowler_wickets',
+            'status','created_at'
+        ]
