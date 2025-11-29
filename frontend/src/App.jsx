@@ -47,7 +47,6 @@ function nonStrikerSummary(m) {
 
 function bowlerSummary(m) {
   const name = safeName(m.bowler_name);
-  // bowler_overs may be stored as string like "2.3" — keep as-is but fallback
   const overs =
     m.bowler_overs !== undefined && m.bowler_overs !== null
       ? String(m.bowler_overs)
@@ -126,7 +125,13 @@ function App() {
               const bowler = bowlerSummary(m);
 
               return (
-                <Card key={m.id} shadow="md" padding="lg" radius="md" withBorder>
+                <Card
+                  key={m.id}
+                  shadow="md"
+                  padding="lg"
+                  radius="md"
+                  withBorder
+                >
                   <Title order={3}>
                     <span className={`fi fi-${teamA.flag} flag-icon`} />
                     {teamA.shortName} ({teamA.name}) vs{" "}
@@ -150,48 +155,109 @@ function App() {
                     {m.wickets_team_b ?? 0} in {m.overs_team_b ?? "0.0"} overs
                   </Text>
 
-                  <Group position="apart" mt="md" spacing="lg">
-                    <div>
-                      <Text size="sm" color="dimmed">
-                        Batsmen
+                  {/* --- BATTING + BOWLING (ALL THREE IN ONE ROW) --- */}
+                  {/* --- THREE-COLUMN CENTERED ROW: STRIKER | NON-STRIKER | BOWLER --- */}
+                  <div
+                    style={{
+                      marginTop: "1.4rem",
+                      display: "flex",
+                      flexDirection: "row",
+                      gap: "2.5rem",
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* Striker */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: "140px",
+                        textAlign: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Badge
+                        variant="filled"
+                        color="blue"
+                        size="sm"
+                        style={{ marginBottom: 6 }}
+                      >
+                        Striker
+                      </Badge>
+                      <Text weight={600} style={{ textAlign: "center" }}>
+                        {striker.name}
                       </Text>
-
-                      <Group spacing="sm" mt="xs" align="center">
-                        <Badge variant="filled">Striker</Badge>
-                        <div>
-                          <Text weight={600}>{striker.name}</Text>
-                          <Text size="sm" color="dimmed">
-                            {striker.stats}
-                          </Text>
-                        </div>
-                      </Group>
-
-                      <Group spacing="sm" mt="xs" align="center">
-                        <Badge variant="outline">Non-striker</Badge>
-                        <div>
-                          <Text weight={600}>{nonStriker.name}</Text>
-                          <Text size="sm" color="dimmed">
-                            {nonStriker.stats}
-                          </Text>
-                        </div>
-                      </Group>
+                      <Text
+                        size="sm"
+                        color="dimmed"
+                        style={{ textAlign: "center" }}
+                      >
+                        {striker.stats}
+                      </Text>
                     </div>
 
-                    <div style={{ textAlign: "right" }}>
-                      <Text size="sm" color="dimmed">
+                    {/* Non-striker */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: "140px",
+                        textAlign: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Badge
+                        variant="outline"
+                        color="blue"
+                        size="sm"
+                        style={{ marginBottom: 6 }}
+                      >
+                        Non-striker
+                      </Badge>
+                      <Text weight={600} style={{ textAlign: "center" }}>
+                        {nonStriker.name}
+                      </Text>
+                      <Text
+                        size="sm"
+                        color="dimmed"
+                        style={{ textAlign: "center" }}
+                      >
+                        {nonStriker.stats}
+                      </Text>
+                    </div>
+
+                    {/* Bowler */}
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: "140px",
+                        textAlign: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Badge
+                        variant="light"
+                        color="green"
+                        size="sm"
+                        style={{ marginBottom: 6 }}
+                      >
                         Bowler
+                      </Badge>
+                      <Text weight={600} style={{ textAlign: "center" }}>
+                        {bowler.name}
                       </Text>
-
-                      <Group spacing="sm" mt="xs" position="right" align="center">
-                        <div>
-                          <Text weight={600}>{bowler.name}</Text>
-                          <Text size="sm" color="dimmed">
-                            {bowler.stats}
-                          </Text>
-                        </div>
-                      </Group>
+                      <Text
+                        size="sm"
+                        color="dimmed"
+                        style={{ textAlign: "center" }}
+                      >
+                        {bowler.stats}
+                      </Text>
                     </div>
-                  </Group>
+                  </div>
                 </Card>
               );
             })}
